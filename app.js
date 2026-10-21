@@ -37,3 +37,96 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
     target.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 });
+
+// 滚动进度条与返回顶部按钮
+const scrollProgress = document.getElementById("scrollProgress");
+const backToTop = document.getElementById("backToTop");
+
+window.addEventListener(
+  "scroll",
+  () => {
+    const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+    if (scrollProgress) scrollProgress.style.width = `${scrolled}%`;
+
+    if (backToTop) {
+      if (winScroll > 400) {
+        backToTop.classList.add("is-visible");
+      } else {
+        backToTop.classList.remove("is-visible");
+      }
+    }
+  },
+  { passive: true }
+);
+
+if (backToTop) {
+  backToTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
+// 移动端折叠导航
+const menuToggle = document.getElementById("menuToggle");
+const mobileMenu = document.getElementById("mobileMenu");
+
+if (menuToggle && mobileMenu) {
+  menuToggle.addEventListener("click", () => {
+    const isOpen = mobileMenu.classList.toggle("is-open");
+    menuToggle.classList.toggle("is-active", isOpen);
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+    mobileMenu.setAttribute("aria-hidden", String(!isOpen));
+  });
+
+  mobileMenu.querySelectorAll("a").forEach(item => {
+    item.addEventListener("click", () => {
+      mobileMenu.classList.remove("is-open");
+      menuToggle.classList.remove("is-active");
+      menuToggle.setAttribute("aria-expanded", "false");
+      mobileMenu.setAttribute("aria-hidden", "true");
+    });
+  });
+}
+
+// 滚动监听高亮（ScrollSpy）
+const trackedSections = ["#family", "#memory", "#agent", "#clicker", "#compatibility"]
+  .map(id => document.querySelector(id))
+  .filter(Boolean);
+
+const navItems = document.querySelectorAll(".nav-item");
+const mobileNavItems = document.querySelectorAll(".mobile-nav-item");
+
+window.addEventListener(
+  "scroll",
+  () => {
+    const scrollPos = window.scrollY + 160;
+    let currentId = "";
+
+    trackedSections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      if (scrollPos >= top && scrollPos < top + height) {
+        currentId = `#${section.id}`;
+      }
+    });
+
+    navItems.forEach(link => {
+      link.classList.toggle("active", link.getAttribute("href") === currentId);
+    });
+    mobileNavItems.forEach(link => {
+      link.classList.toggle("active", link.getAttribute("href") === currentId);
+    });
+  },
+  { passive: true }
+);
+
+// Agent 演示窗口标签切换互动
+const sidebarItems = document.querySelectorAll(".agent-sidebar .sidebar-item");
+sidebarItems.forEach(item => {
+  item.style.cursor = "pointer";
+  item.addEventListener("click", () => {
+    sidebarItems.forEach(i => i.classList.remove("active"));
+    item.classList.add("active");
+  });
+});

@@ -6,9 +6,15 @@
   <meta name="theme-color" content="#06080d" />
   <meta name="description" content="MT Family：面向 iOS 的内存分析、AI 工程工作站与自动化工具系列。" />
   <title>MT Family — iOS Tools, Reimagined</title>
+  <link rel="icon" type="image/png" href="./assets/mt-agent.png" />
+  <link rel="apple-touch-icon" href="./assets/mt-agent.png" />
+  <meta property="og:title" content="MT Family — iOS Tools, Reimagined" />
+  <meta property="og:description" content="MT Family：面向 iOS 的内存分析、AI 工程工作站与自动化工具系列。" />
+  <meta property="og:type" content="website" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
   <div class="page-noise" aria-hidden="true"></div>
   <div class="orb orb-one" aria-hidden="true"></div>
   <div class="orb orb-two" aria-hidden="true"></div>
@@ -19,12 +25,28 @@
         <span class="brand-logo">MT</span>
         <span class="brand-text"><strong>MT Family</strong><small>iOS Tools, Reimagined</small></span>
       </a>
-      <div class="nav-links">
-        <a href="#family">产品系列</a><a href="#memory">内存工具</a><a href="#agent">智能体</a>
-        <a href="#clicker">连点器</a><a href="#compatibility">兼容性</a>
+      <div class="nav-links" id="navLinks">
+        <a href="#family" class="nav-item">产品系列</a>
+        <a href="#memory" class="nav-item">内存工具</a>
+        <a href="#agent" class="nav-item">智能体</a>
+        <a href="#clicker" class="nav-item">连点器</a>
+        <a href="#compatibility" class="nav-item">兼容性</a>
       </div>
-      <a class="nav-button" href="https://github.com/susu123oss" target="_blank" rel="noreferrer">GitHub <span>↗</span></a>
+      <div class="nav-right">
+        <a class="nav-button" href="https://github.com/susu123oss" target="_blank" rel="noreferrer">GitHub <span>↗</span></a>
+        <button class="menu-toggle" id="menuToggle" aria-label="切换导航菜单" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </nav>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <a href="#family" class="mobile-nav-item">产品系列</a>
+      <a href="#memory" class="mobile-nav-item">内存工具</a>
+      <a href="#agent" class="mobile-nav-item">智能体</a>
+      <a href="#clicker" class="mobile-nav-item">连点器</a>
+      <a href="#compatibility" class="mobile-nav-item">兼容性</a>
+      <a href="https://github.com/susu123oss" target="_blank" rel="noreferrer" class="mobile-nav-github">GitHub 仓库 ↗</a>
+    </div>
   </header>
 
   <main id="top">
@@ -88,7 +110,7 @@
     <section class="product-section memory-section" id="memory">
       <div class="shell product-layout">
         <div class="product-story reveal">
-          <div class="product-label"><img src="./assets/mt-memory.png" alt="" /><div><span>MT MEMORY TOOL</span><strong>MT 内存工具</strong></div></div>
+          <div class="product-label"><img src="./assets/mt-memory.png" alt="" /><div><span>MT MEMORY TOOL</span><strong>MT 内存工具 <em class="section-version">v1.8.5</em></strong></div></div>
           <h2>把“一个变化的数值”，追到它真正的来源。</h2>
           <p class="product-intro">MT 内存工具面向需要观察、定位和验证运行时数据的用户。它把传统上分散在多个工具里的操作集中到手机端，让搜索、定位、追踪、查看、修改和成果保存形成连续工作流。</p>
           <div class="feature-list">
@@ -133,7 +155,7 @@
           </div>
         </div>
         <div class="product-story reveal">
-          <div class="product-label"><img src="./assets/mt-agent.png" alt="" /><div><span>MT AGENT</span><strong>MT 智能体</strong></div></div>
+          <div class="product-label"><img src="./assets/mt-agent.png" alt="" /><div><span>MT AGENT</span><strong>MT 智能体 <em class="section-version">v1.0.7</em></strong></div></div>
           <h2>不是聊天机器人，是能把工程继续做下去的 AI 工作站。</h2>
           <p class="product-intro">MT 智能体把对话、项目文件、开发环境和可执行工具放进同一个原生 iOS 工作区。你可以让它理解项目、修改代码、运行命令、分析程序、构建产物，并在长任务中持续保留上下文。</p>
           <div class="feature-list compact">
@@ -155,7 +177,7 @@
     <section class="product-section clicker-section" id="clicker">
       <div class="shell product-layout">
         <div class="product-story reveal">
-          <div class="product-label"><img src="./assets/mt-clicker-v115.png" alt="" /><div><span>MT AUTOCLICKER</span><strong>MT 连点器</strong></div></div>
+          <div class="product-label"><img src="./assets/mt-clicker-v115.png" alt="" /><div><span>MT AUTOCLICKER</span><strong>MT 连点器 <em class="section-version">v1.1.5</em></strong></div></div>
           <h2>让自动化留在屏幕上，持续观察，也持续执行。</h2>
           <p class="product-intro">MT 连点器面向重复操作、流程测试和视觉识别自动化场景。独立悬浮控制让任务在目标 App 之外保持可见、可控，并把手势、截图识别和文字输入组合到同一套操作体验中。</p>
           <div class="feature-list">
@@ -238,6 +260,9 @@
     <div><strong>MT Family</strong><span>iOS Memory · AI Engineering · Automation</span></div>
     <p>仅用于合法、授权的开发、测试、研究与自动化场景。</p>
   </footer>
+  <button class="back-to-top" id="backToTop" aria-label="返回顶部">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
   <script src="./app.js"></script>
 </body>
 </html>
